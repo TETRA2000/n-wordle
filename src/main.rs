@@ -1,6 +1,9 @@
 use std::fs;
 use std::io;
+use ansi_term::Color::{Black, Green, White, Yellow};
 use rand::seq::SliceRandom;
+use ansi_term::Style;
+
 
 fn main() {
     println!("Loading dictionary...");
@@ -41,15 +44,26 @@ fn main() {
         io::stdin().read_line(&mut buffer);
         let guess = buffer.trim();
 
-        let mut found = false;
         if answer == guess {
+            print!("{}", Style::new().on(Green).fg(Black).paint(answer));
             println!("You guessed correctly!");
-            found = true;
             break;
         }
-        if !found {
-            println!("You guessed incorrectly!");
+
+        // Split word into chars
+        let mut guess_chars: Vec<char> = guess.chars().collect();
+        let mut answer_chars: Vec<char> = answer.chars().collect();
+        for i in 0..answer_chars.len() {
+            if guess_chars[i] == answer_chars[i] {
+                print!("{}", Style::new().on(Green).fg(Black).paint(guess_chars[i].to_string()));
+            } else if answer_chars.contains(&guess_chars[i]) {
+                print!("{}", Style::new().on(Yellow).fg(Black).paint(guess_chars[i].to_string()));
+            } else {
+                print!("{}", Style::new().on(Black).fg(White).paint(guess_chars[i].to_string()));
+            }
         }
+        print!("\n");
+        println!("You guessed incorrectly!");
     }
 
     println!("The answer was {}", answer);
