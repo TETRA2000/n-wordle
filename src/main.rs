@@ -17,7 +17,7 @@ fn main() {
     println!("How many characters of word do you want to guess? [3-6]");
 
     let mut buffer = String::new();
-    io::stdin().read_line(&mut buffer);
+    io::stdin().read_line(&mut buffer).unwrap();
 
     // TODO: validate input
 
@@ -41,7 +41,7 @@ fn main() {
     for _ in 0..5 {
         println!("Guess a word");
         let mut buffer = String::new();
-        io::stdin().read_line(&mut buffer);
+        io::stdin().read_line(&mut buffer).unwrap();
         let guess = buffer.trim();
 
         if answer == guess {
@@ -51,8 +51,8 @@ fn main() {
         }
 
         // Split word into chars
-        let mut guess_chars: Vec<char> = guess.chars().collect();
-        let mut answer_chars: Vec<char> = answer.chars().collect();
+        let guess_chars: Vec<char> = guess.chars().collect();
+        let answer_chars: Vec<char> = answer.chars().collect();
         for i in 0..answer_chars.len() {
             if guess_chars[i] == answer_chars[i] {
                 print!("{}", Style::new().on(Green).fg(Black).paint(guess_chars[i].to_string()));
